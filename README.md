@@ -31,7 +31,7 @@
     textarea {
       min-height: 80px;
     }
-    button {
+    button.save-btn {
       margin-top: 20px;
       width: 100%;
       padding: 12px;
@@ -52,15 +52,14 @@
       color: #666;
     }
     .delete-btn {
-      background: #ff3b30;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      padding: 6px 10px;
-      font-size: 14px;
       position: absolute;
-      top: 15px;
-      right: 15px;
+      top: 10px;
+      right: 10px;
+      background: transparent;
+      border: none;
+      color: #ff3b30;
+      font-size: 14px;
+      padding: 4px;
     }
   </style>
 </head>
@@ -80,7 +79,7 @@
 <label>How I Can Apply It</label>
 <textarea id="apply"></textarea>
 
-<button onclick="saveEntry()">Save Entry</button>
+<button class="save-btn" onclick="saveEntry()">Save Entry</button>
 
 <div id="entries"></div>
 
@@ -99,40 +98,5 @@
     entries.unshift(entry);
     localStorage.setItem("journal", JSON.stringify(entries));
 
-    read.value = learned.value = apply.value = "";
-    loadEntries();
-  }
-
-  function deleteEntry(index) {
-    if (!confirm("Delete this entry?")) return;
-
-    const entries = JSON.parse(localStorage.getItem("journal")) || [];
-    entries.splice(index, 1);
-    localStorage.setItem("journal", JSON.stringify(entries));
-    loadEntries();
-  }
-
-  function loadEntries() {
-    const entries = JSON.parse(localStorage.getItem("journal")) || [];
-    entriesDiv.innerHTML = "";
-
-    entries.forEach((e, index) => {
-      entriesDiv.innerHTML += `
-        <div class="entry">
-          <button class="delete-btn" onclick="deleteEntry(${index})">Delete</button>
-          <small>${e.date || ""}</small>
-          <p><strong>Read:</strong> ${e.read}</p>
-          <p><strong>Learned:</strong> ${e.learned}</p>
-          <p><strong>Apply:</strong> ${e.apply}</p>
-        </div>
-      `;
-    });
-  }
-
-  loadEntries();
-</script>
-
-</body>
-</html>
-
+    read.value
 
