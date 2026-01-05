@@ -98,5 +98,38 @@
     entries.unshift(entry);
     localStorage.setItem("journal", JSON.stringify(entries));
 
-    read.value
+    read.value = learned.value = apply.value = "";
+    loadEntries();
+  }
 
+  function deleteEntry(index) {
+    if (!confirm("Delete this entry?")) return;
+
+    const entries = JSON.parse(localStorage.getItem("journal")) || [];
+    entries.splice(index, 1);
+    localStorage.setItem("journal", JSON.stringify(entries));
+    loadEntries();
+  }
+
+  function loadEntries() {
+    const entries = JSON.parse(localStorage.getItem("journal")) || [];
+    entriesDiv.innerHTML = "";
+
+    entries.forEach((e, index) => {
+      entriesDiv.innerHTML += `
+        <div class="entry">
+          <button class="delete-btn" onclick="deleteEntry(${index})">✕</button>
+          <small>${e.date || ""}</small>
+          <p><strong>Read:</strong> ${e.read}</p>
+          <p><strong>Learned:</strong> ${e.learned}</p>
+          <p><strong>Apply:</strong> ${e.apply}</p>
+        </div>
+      `;
+    });
+  }
+
+  loadEntries();
+</script>
+
+</body>
+</html>
