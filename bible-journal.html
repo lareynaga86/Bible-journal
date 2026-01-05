@@ -12,8 +12,14 @@
       max-width: 600px;
       margin: auto;
     }
-    h1 { text-align: center; }
-    label { font-weight: 600; margin-top: 15px; display: block; }
+    h1 {
+      text-align: center;
+    }
+    label {
+      font-weight: 600;
+      margin-top: 15px;
+      display: block;
+    }
     input, textarea {
       width: 100%;
       padding: 10px;
@@ -22,7 +28,9 @@
       border: 1px solid #ccc;
       font-size: 16px;
     }
-    textarea { min-height: 80px; }
+    textarea {
+      min-height: 80px;
+    }
     button {
       margin-top: 20px;
       width: 100%;
@@ -38,8 +46,22 @@
       padding: 15px;
       border-radius: 10px;
       margin-top: 20px;
+      position: relative;
     }
-    .entry small { color: #666; }
+    .entry small {
+      color: #666;
+    }
+    .delete-btn {
+      background: #ff3b30;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 14px;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+    }
   </style>
 </head>
 <body>
@@ -81,13 +103,24 @@
     loadEntries();
   }
 
+  function deleteEntry(index) {
+    if (!confirm("Delete this entry?")) return;
+
+    const entries = JSON.parse(localStorage.getItem("journal")) || [];
+    entries.splice(index, 1);
+    localStorage.setItem("journal", JSON.stringify(entries));
+    loadEntries();
+  }
+
   function loadEntries() {
     const entries = JSON.parse(localStorage.getItem("journal")) || [];
     entriesDiv.innerHTML = "";
-    entries.forEach(e => {
+
+    entries.forEach((e, index) => {
       entriesDiv.innerHTML += `
         <div class="entry">
-          <small>${e.date}</small>
+          <button class="delete-btn" onclick="deleteEntry(${index})">Delete</button>
+          <small>${e.date || ""}</small>
           <p><strong>Read:</strong> ${e.read}</p>
           <p><strong>Learned:</strong> ${e.learned}</p>
           <p><strong>Apply:</strong> ${e.apply}</p>
